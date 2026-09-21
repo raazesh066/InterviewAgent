@@ -21,10 +21,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql18 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY backend/ .
+COPY docs/api/DATABASE_SCHEMA.sql /docs/api/DATABASE_SCHEMA.sql
 
 RUN useradd --create-home appuser && chown -R appuser:appuser /app
 USER appuser
