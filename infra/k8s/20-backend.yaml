@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interview-backend
+  namespace: interview-platform
+  labels:
+    app: interview-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: interview-backend
+  template:
+    metadata:
+      labels:
+        app: interview-backend
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/your-org/interview-backend:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: interview-backend-config
+            - secretRef:
+                name: interview-backend-secrets
+          readinessProbe:
+            httpGet: { path: /health, port: 8000 }
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /health, port: 8000 }
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            requests: { cpu: "250m", memory: "512Mi" }
+            limits: { cpu: "1", memory: "1Gi" }
+          volumeMounts:
+            - name: storage
+              mountPath: /app/storage
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: interview-backend-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: interview-backend-storage
+  namespace: interview-platform
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: interview-backend
+  namespace: interview-platform
+spec:
+  selector:
+    app: interview-backend
+  ports:
+    - port: 80
+      targetPort: 8000
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: interview-backend-hpa
+  namespace: interview-platform
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: interview-backend
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

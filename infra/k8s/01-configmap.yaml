@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: interview-backend-config
+  namespace: interview-platform
+data:
+  ENVIRONMENT: "production"
+  DEBUG: "false"
+  API_V1_PREFIX: "/api/v1"
+  CORS_ORIGINS: '["https://interview.example.com"]'
+  DATABASE_SERVER: "sqlserver,1433"
+  DATABASE_NAME: "interview_db"
+  DATABASE_DRIVER: "ODBC Driver 18 for SQL Server"
+  DATABASE_ENCRYPT: "true"
+  DATABASE_TRUST_SERVER_CERTIFICATE: "true"
+  REDIS_URL: "redis://redis:6379/0"
+  CACHE_TTL_SECONDS: "300"
+  RATE_LIMIT_DEFAULT: "100/minute"
+  AZURE_OPENAI_API_VERSION: "2024-08-01-preview"
+  AZURE_OPENAI_DEPLOYMENT_GPT4O: "gpt-4o"
+  AZURE_SPEECH_REGION: "eastus"
+  AZURE_SPEECH_VOICE: "en-US-JennyNeural"
+  STORAGE_ROOT: "/app/storage"
+  OTEL_ENABLED: "true"
+  MAX_QUESTIONS_PER_INTERVIEW: "20"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: interview-frontend-config
+  namespace: interview-platform
+data:
+  VITE_API_BASE_URL: "https://api.interview.example.com/api/v1"

@@ -1,0 +1,6 @@
+Superseded: this debug log was captured while create-azure-resources.ps1 still provisioned a
+PostgreSQL Flexible Server. The app only supports SQL Server via pyodbc (app/core/config.py,
+app/infrastructure/db/session.py), so the script now provisions an Azure SQL Database instead
+(az sql server create / az sql db create). Re-run infra/scripts/create-azure-resources.ps1 to
+generate a fresh, SQL Server-based provisioning log.
+

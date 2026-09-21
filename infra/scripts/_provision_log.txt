@@ -1,0 +1,47 @@
+Superseded: this log recorded a run of an older version of create-azure-resources.ps1 that
+attempted to provision a PostgreSQL Flexible Server (failed: region restricted) and a classic
+Azure Cache for Redis (failed: Microsoft.Cache namespace not registered).
+
+The app only supports SQL Server via pyodbc (app/core/config.py, app/infrastructure/db/session.py) —
+there is no Postgres/asyncpg code path — so infra/scripts/create-azure-resources.ps1 now provisions
+an Azure SQL Database (az sql server create / az sql db create) instead of Postgres.
+
+Before re-running:
+  - Register the Microsoft.Cache resource provider so Redis can be created:
+    az provider register --namespace Microsoft.Cache
+  - Pick a SQL-supported region if "eastus2" is restricted for your subscription (-SqlLocation).
+
+Original (stale) Redis failure below, kept for reference:
+
+Creating Azure Cache for Redis 'interviewagent-redis-q5hy19' (Basic C0)...
+ERROR: (MissingSubscriptionRegistration) The subscription is not registered to use namespace 'Microsoft.Cache'. See https://aka.ms/rps-not-found for how to register subscriptions.
+Code: MissingSubscriptionRegistration
+Message: The subscription is not registered to use namespace 'Microsoft.Cache'. See https://aka.ms/rps-not-found for how to register subscriptions.
+Exception Details:	(MissingSubscriptionRegistration) The subscription is not registered to use namespace 'Microsoft.Cache'. See https://aka.ms/rps-not-found for how to register subscriptions.
+	Code: MissingSubscriptionRegistration
+	Message: The subscription is not registered to use namespace 'Microsoft.Cache'. See https://aka.ms/rps-not-found for how to register subscriptions.
+	Target: Microsoft.Cache
+Waiting for Redis to finish provisioning (can take several minutes)...
+ERROR: 'wait' is misspelled or not recognized by the system.
+
+Examples from AI knowledge base:
+https://aka.ms/cli_ref
+Read more about the command in reference docs
+ERROR: (ResourceNotFound) The Resource 'Microsoft.Cache/Redis/interviewagent-redis-q5hy19' under resource group 'Learn_RG' was not found. For more details please go to https://aka.ms/ARMResourceNotFoundFix
+Code: ResourceNotFound
+Message: The Resource 'Microsoft.Cache/Redis/interviewagent-redis-q5hy19' under resource group 'Learn_RG' was not found. For more details please go to https://aka.ms/ARMResourceNotFoundFix
+
+Creating Azure OpenAI resource 'interviewagent-openai-q5hy19'...
+Deploying model 'gpt-4o-mini'...
+ERROR: (ServiceModelDeprecated) The model 'Format:OpenAI,Name:gpt-4o-mini,Version:2024-07-18' has been deprecated since 03/31/2026 00:00:00.
+Code: ServiceModelDeprecated
+Message: The model 'Format:OpenAI,Name:gpt-4o-mini,Version:2024-07-18' has been deprecated since 03/31/2026 00:00:00.
+
+Creating Azure AI Speech resource 'interviewagent-speech-q5hy19'...
+
+Done. Resource group: Learn_RG
+Generated env values written to: C:\Projects\InterviewAgent\infra\scripts\..\..\backend\.env.azure
+Merge them into backend/.env, then follow docs/START_APPLICATION.md to run the app.
+
+Postgres admin user:     interview_admin
+Postgres admin password: xUYek73i451FQErRICGu!1Aa  (save this securely — shown only once)

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interview-frontend
+  namespace: interview-platform
+  labels:
+    app: interview-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: interview-frontend
+  template:
+    metadata:
+      labels:
+        app: interview-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/your-org/interview-frontend:latest
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: interview-frontend-config
+          readinessProbe:
+            httpGet: { path: /, port: 80 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests: { cpu: "100m", memory: "128Mi" }
+            limits: { cpu: "500m", memory: "256Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: interview-frontend
+  namespace: interview-platform
+spec:
+  selector:
+    app: interview-frontend
+  ports:
+    - port: 80
+      targetPort: 80

@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: interview-platform-ingress
+  namespace: interview-platform
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - interview.example.com
+        - api.interview.example.com
+      secretName: interview-platform-tls
+  rules:
+    - host: interview.example.com
+      http:
+        paths:
+          - path: /()(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: interview-frontend
+                port:
+                  number: 80
+    - host: api.interview.example.com
+      http:
+        paths:
+          - path: /()(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: interview-backend
+                port:
+                  number: 80

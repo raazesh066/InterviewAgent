@@ -1,0 +1,55 @@
+[
+  {
+    "definitionVersion": "1.*.*",
+    "description": "",
+    "displayName": "Enforce tag on resource",
+    "enforcementMode": "DoNotEnforce",
+    "id": "/subscriptions/6d1548ea-18bb-4c07-91bc-88c94a3d0d75/providers/Microsoft.Authorization/policyAssignments/e417a74a482d46d9973cad50",
+    "metadata": {
+      "assignedBy": "Rajesh Yadav",
+      "createdBy": "58ccb340-44aa-4cc6-a60f-71fc2fa24839",
+      "createdOn": "2021-07-15T11:30:35.3911937Z",
+      "parameterScopes": {},
+      "updatedBy": "58ccb340-44aa-4cc6-a60f-71fc2fa24839",
+      "updatedOn": "2022-10-11T06:21:50.3413417Z"
+    },
+    "name": "e417a74a482d46d9973cad50",
+    "nonComplianceMessages": [],
+    "notScopes": [],
+    "parameters": {
+      "tagName": {
+        "value": "Department"
+      }
+    },
+    "policyDefinitionId": "/subscriptions/6d1548ea-18bb-4c07-91bc-88c94a3d0d75/providers/Microsoft.Authorization/policyDefinitions/935baf34-b991-4ceb-9488-8babe1b5898e",
+    "scope": "/subscriptions/6d1548ea-18bb-4c07-91bc-88c94a3d0d75",
+    "systemData": {
+      "lastModifiedAt": "2022-10-11T06:21:50.3053603Z",
+      "lastModifiedBy": "raazesh066@outlook.com",
+      "lastModifiedByType": "User"
+    },
+    "type": "Microsoft.Authorization/policyAssignments"
+  },
+  {
+    "definitionVersion": "57.*.*",
+    "description": "This is the default set of policies monitored by Azure Security Center. It was automatically assigned as part of onboarding to Security Center. The default assignment contains only audit policies. For more information please visit https://aka.ms/ascpolicies",
+    "displayName": "ASC Default (subscription: 6d1548ea-18bb-4c07-91bc-88c94a3d0d75)",
+    "enforcementMode": "Default",
+    "id": "/subscriptions/6d1548ea-18bb-4c07-91bc-88c94a3d0d75/providers/Microsoft.Authorization/policyAssignments/SecurityCenterBuiltIn",
+    "metadata": {
+      "assignedBy": "Security Center",
+      "createdBy": "d25a399f-3dd1-4a6e-8964-79181a745a61",
+      "createdOn": "2021-07-15T07:14:23.1188868Z",
+      "excludedOutOfTheBoxStandards": [
+        "PCI DSS 3.2.1",
+        "ISO 27001",
+        "SOC TSP"
+      ]
+    },
+    "name": "SecurityCenterBuiltIn",
+    "parameters": {},
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8",
+    "scope": "/subscriptions/6d1548ea-18bb-4c07-91bc-88c94a3d0d75",
+    "type": "Microsoft.Authorization/policyAssignments"
+  }
+]
